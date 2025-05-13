@@ -1,14 +1,16 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-
 const userModel = require("./usermodel");
+const uploadRoute = require('./upload');
+
+app.use('/api', uploadRoute);
+
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-// ✅ MongoDB Cloud direct connect (simple way)
 mongoose.connect("mongodb+srv://aryanvishproject:pGxmMdYKzvBJ69FJ@testdb.gij3x6d.mongodb.net/?retryWrites=true&w=majority&appName=testDB")
 .then(() => {
     console.log("MongoDB connected");
@@ -16,7 +18,6 @@ mongoose.connect("mongodb+srv://aryanvishproject:pGxmMdYKzvBJ69FJ@testdb.gij3x6d
     console.error("MongoDB connection error:", err);
 });
 
-// ✅ Routes
 app.get("/", (req, res) => res.send("hello from backend"));
 
 app.post("/create", async (req, res) => {
@@ -43,5 +44,4 @@ app.post("/delete", async (req, res) => {
     res.send(deletedUser);
 });
 
-// ✅ Run server
 app.listen(3000, () => console.log("Running on port 3000"));
